@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "56617049192",
+    "project_id": "kuapp3-cff8d",
+    "storage_bucket": "kuapp3-cff8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56617049192:android:e7781788d99b4d51ccafdd",
+        "android_client_info": {
+          "package_name": "com.example.kuapp3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56617049192-14320atvkb2dpdoahtafeetr8bvg8cnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ1RhMeDW-VEOcgQy7daTEpoRvMqaGM0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56617049192-14320atvkb2dpdoahtafeetr8bvg8cnn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "56617049192-39ks57rk3or5qjquobqnr72o4bk6uppu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kuapp3.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
