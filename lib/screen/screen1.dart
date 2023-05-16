@@ -1,13 +1,12 @@
 import 'dart:ui';
 
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
 
 class Screen1 extends StatefulWidget {
   Screen1({super.key, required this.link});
@@ -18,13 +17,9 @@ class Screen1 extends StatefulWidget {
 
 class _Screen1State extends State<Screen1> {
   late final WebViewController _controller;
-  final _remoteConfig = FirebaseRemoteConfig.instance;
+
   @override
   void initState() {
-    // TODO: implement initState
-    // init();
-    widget.link = _remoteConfig.getString('weblink1');
-
     super.initState();
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -96,23 +91,9 @@ class _Screen1State extends State<Screen1> {
     _controller = controller;
   }
 
-  init() async {
-    await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 60),
-      minimumFetchInterval: const Duration(seconds: 1),
-    ));
-    var web1 = "";
-    await _remoteConfig.ensureInitialized();
-    await _remoteConfig.activate();
-    await _remoteConfig.fetchAndActivate().then((value) {
-      web1 = _remoteConfig.getString('weblink1');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text('Flutter Simple Example')),
       body: WebViewWidget(controller: _controller),
     );
   }

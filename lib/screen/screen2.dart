@@ -1,9 +1,7 @@
 import 'dart:ui';
 
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
@@ -18,13 +16,9 @@ class Screen2 extends StatefulWidget {
 
 class _Screen2State extends State<Screen2> {
   late final WebViewController _controller;
-  final _remoteConfig = FirebaseRemoteConfig.instance;
+
   @override
   void initState() {
-    // TODO: implement initState
-    init();
-    widget.link = _remoteConfig.getString('weblink2');
-    print('asdasdasdasd ${widget.link}');
     super.initState();
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -37,7 +31,7 @@ class _Screen2State extends State<Screen2> {
     }
 
     final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(params);
+    WebViewController.fromPlatformCreationParams(params);
     // #enddocregion platform_features
 
     controller
@@ -92,28 +86,13 @@ class _Screen2State extends State<Screen2> {
       (controller.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
     }
-    // #enddocregion platform_features
 
     _controller = controller;
-  }
-
-  init() async {
-    await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 60),
-      minimumFetchInterval: const Duration(seconds: 1),
-    ));
-    var web1 = "";
-    await _remoteConfig.ensureInitialized();
-    await _remoteConfig.activate();
-    await _remoteConfig.fetchAndActivate().then((value) {
-      web1 = _remoteConfig.getString('weblink1');
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text('Flutter Simple Example')),
       body: WebViewWidget(controller: _controller),
     );
   }

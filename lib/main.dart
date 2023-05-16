@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kuvouchervn/remote_config_service.dart';
 
 import 'firebase_options.dart';
 import 'screen/screen1.dart';
@@ -19,6 +21,7 @@ Future main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final firebaseRemoteConfigService = const FirebaseRemoteConfigService();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,15 +31,24 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: FutureBuilder<FirebaseRemoteConfig>(
+        future: firebaseRemoteConfigService.setupRemoteConfig(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? MyHomePage(remoteConfig: snapshot.data)
+              : const Scaffold(
+                body: Center(child: CircularProgressIndicator(),),
+          );
+        }
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.remoteConfig});
 
-  final String title;
+  final FirebaseRemoteConfig remoteConfig;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -45,20 +57,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   int _selectedIndex = 0;
+  late List<String> weblinks;
 
   @override
   void initState() {
     init();
     // TODO: implement initState
     super.initState();
+    weblinks = [
+      widget.remoteConfig.getString('weblink1'),
+      widget.remoteConfig.getString('weblink2'),
+      widget.remoteConfig.getString('weblink3'),
+      widget.remoteConfig.getString('weblink4'),
+    ];
   }
-
-  final List<Widget> _widgetOptions = <Widget>[
-    Screen1(link: "",),
-    Screen2(link: ""),
-    Screen3(link: ""),
-    Screen4(link: ""),
-  ];
 
   final List<String> _icon = [
     'assets/icons/house-solid.svg',
@@ -146,6 +158,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        body: _widgetOptions.elementAt(_selectedIndex));
+        body: [
+          Screen1(link: weblinks[0]),
+          Screen2(link: weblinks[1]),
+          Screen3(link: weblinks[2]),
+          Screen4(link: weblinks[3]),
+        ].elementAt(_selectedIndex));
   }
 }
+
